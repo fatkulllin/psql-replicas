@@ -1,0 +1,31 @@
+version: "3.0"
+services:
+
+  masterPG:
+    container_name: masterPG
+    image: pgreplica
+    restart: always
+    networks:
+      - pgsql-net
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    command: postgres -c config_file=/var/lib/postgresql/postgresql.conf
+
+  slavePG:
+    container_name: slavePG
+    image: pgslave
+    restart: always
+    networks:
+      - pgsql-net
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - masterPG
+    # volumes:
+    #   - /home/tages/Tages/pgsql_replica/slavePG:/var/lib/postgresql/data
+
+    
+
+
+networks:
+  pgsql-net:

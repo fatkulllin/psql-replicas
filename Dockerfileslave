@@ -1,0 +1,13 @@
+FROM postgres:13
+
+RUN apt-get update -y\ 
+    && apt-get install nano -y
+RUN mkdir /data/back -p
+RUN chmod 700 /data/back
+RUN chown -R postgres:postgres /data/back
+COPY bash.sh  /data/bash.sh
+# RUN /var/lib/postgresql/bash.sh
+
+# USER postgres
+
+ENTRYPOINT ["bin/sh", "/data/bash.sh"]
