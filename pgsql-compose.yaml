@@ -13,6 +13,11 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
     command: postgres -c config_file=/var/lib/postgresql/postgresql.conf
+    healthcheck:
+        test: [ "CMD", "pg_isready", "-h", "masterPG", "-U", "postgres" ]
+        timeout: 10s
+        interval: 10s
+        retries: 10
 
   slavePG:
     container_name: slavePG
@@ -26,12 +31,10 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
     depends_on:
-      - masterPG
+        masterPG:
+          condition: service_healthy
     # volumes:
-    #   - /home/tages/Tages/pgsql_replica/slavePG:/var/lib/postgresql/data
-
+    #   - /home/tages/Tages/pgsql_replica/slavePG:/var/lib/postgresql/data  
     
-
-
 networks:
   pgsql-net:
