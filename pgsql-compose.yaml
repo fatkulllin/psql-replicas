@@ -3,6 +3,9 @@ services:
 
   masterPG:
     container_name: masterPG
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: pgreplica
     restart: always
     networks:
@@ -13,6 +16,9 @@ services:
 
   slavePG:
     container_name: slavePG
+    build:
+      context: .
+      dockerfile: Dockerfileslave
     image: pgslave
     restart: always
     networks:
